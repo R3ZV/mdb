@@ -18,7 +18,6 @@ pub fn create_html(tokens: []const Token) ![]const u8 {
             .H4 => fmt = try std.fmt.allocPrint(alloc, "<h4>{s}</h4>\n", .{tokens[i].content}),
             .H5 => fmt = try std.fmt.allocPrint(alloc, "<h5>{s}</h5>\n", .{tokens[i].content}),
             .H6 => fmt = try std.fmt.allocPrint(alloc, "<h6>{s}</h6>\n", .{tokens[i].content}),
-            .NewLine => fmt = try std.fmt.allocPrint(alloc, "<br/>\n", .{}),
             .P => {
                 var aux: []u8 = "";
                 aux = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, "<p>\n" });
@@ -62,6 +61,7 @@ pub fn create_html(tokens: []const Token) ![]const u8 {
             .Link => unreachable,
             .Quote => unreachable,
             .Image => unreachable,
+            .Eof => continue,
             .Illegal => unreachable,
         }
 

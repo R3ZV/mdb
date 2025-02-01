@@ -20,6 +20,8 @@ pub const Lexer = struct {
         var toks = std.ArrayList(Token).init(self.alloc);
         var it = std.mem.split(u8, self.input, "\n");
         while (it.next()) |line| {
+            if (std.mem.eql(u8, line, "")) continue;
+
             const token = parse(line);
             toks.append(token) catch {};
         }
@@ -28,10 +30,6 @@ pub const Lexer = struct {
     }
 
     fn parse(line: []const u8) Token {
-        if (std.mem.eql(u8, line, "")) {
-            return Token.new(TokenType.NewLine, "");
-        }
-
         if (line[0] == '#') {
             return parse_header(line);
         }
@@ -48,7 +46,7 @@ pub const Lexer = struct {
             return Token.new(.Ol, line[2..]);
         }
 
-        return Token.new(.Illegal, "");
+        return Token.new(.Eof, "");
     }
 
     fn parse_header(line: []const u8) Token {

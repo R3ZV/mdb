@@ -10,10 +10,10 @@ pub const TokenType = enum {
     Link,
     Quote,
     Image,
-    NewLine,
     Illegal,
     Ol,
     Ul,
+    Eof,
 
     pub fn header_level(level: usize) TokenType {
         return switch (level) {
