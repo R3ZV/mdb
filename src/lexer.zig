@@ -37,7 +37,7 @@ pub const Lexer = struct {
         }
 
         if (std.ascii.isAlphabetic(line[0])) {
-            return Token.new(.Text, line);
+            return Token.new(.P, line);
         }
 
         if (line[0] == '-') {
@@ -60,13 +60,16 @@ pub const Lexer = struct {
     }
 };
 
-test {
+test "text based tokens" {
     const testing = std.testing;
     const alloc = testing.allocator;
 
     const buff =
         \\# Foo
         \\## bar
+        \\### bar3
+        \\#### bar4
+        \\##### bar5
         \\####### foobar #bazz
         \\some text
         \\1.
@@ -81,16 +84,19 @@ test {
     const want = .{
         Token.new(.H1, "Foo"),
         Token.new(.H2, "bar"),
+        Token.new(.H3, "bar3"),
+        Token.new(.H4, "bar4"),
+        Token.new(.H5, "bar5"),
         Token.new(.H6, "foobar #bazz"),
-        Token.new(.Text, "some text"),
+        Token.new(.P, "some text"),
         Token.new(.Ol, ""),
         Token.new(.Ol, " list"),
         Token.new(.Ul, " todo"),
     };
 
     try testing.expectEqual(want.len, tokens.items.len);
-    for (tokens.items, want) |token, want_token| {
-        try testing.expectEqual(want_token.content, token.content);
-        try testing.expectEqual(want_token.token_type, token.token_type);
+    inline for (tokens.items, want) |token, want_token| {
+        try testing.expectEqualDeep(want_token.token_type, token.token_type);
+        try testing.expectEqualDeep(want_token.content, token.content);
     }
 }

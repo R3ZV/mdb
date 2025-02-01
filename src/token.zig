@@ -5,7 +5,7 @@ pub const TokenType = enum {
     H4,
     H5,
     H6,
-    Text,
+    P,
     Code,
     Link,
     Quote,
