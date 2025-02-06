@@ -17,5 +17,5 @@ fn main() {
     }
 
     let page = create_html(&tokens);
-    dbg!(page);
+    println!("{page}");
 }

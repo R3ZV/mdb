@@ -2,64 +2,61 @@ use crate::token::{Token, TokenType};
 
 pub fn create_html(tokens: &Vec<Token>) -> String {
     let mut html = String::new();
-    for token in tokens {
+    let mut i = 0;
+    while i < tokens.len() {
         // TODO: add identation
-        match token.ttype() {
-            TokenType::H1 => html += format!("<h1>{}</h1>\n", token.content()).as_str(),
-            TokenType::H2 => html += format!("<h2>{}</h2>\n", token.content()).as_str(),
-            TokenType::H3 => html += format!("<h3>{}</h3>\n", token.content()).as_str(),
-            TokenType::H4 => html += format!("<h4>{}</h4>\n", token.content()).as_str(),
-            TokenType::H5 => html += format!("<h5>{}</h5>\n", token.content()).as_str(),
-            TokenType::H6 => html += format!("<h6>{}</h6>\n", token.content()).as_str(),
+        match tokens[i].ttype() {
+            TokenType::H1 => html += format!("<h1>{}</h1>\n", tokens[i].content()).as_str(),
+            TokenType::H2 => html += format!("<h2>{}</h2>\n", tokens[i].content()).as_str(),
+            TokenType::H3 => html += format!("<h3>{}</h3>\n", tokens[i].content()).as_str(),
+            TokenType::H4 => html += format!("<h4>{}</h4>\n", tokens[i].content()).as_str(),
+            TokenType::H5 => html += format!("<h5>{}</h5>\n", tokens[i].content()).as_str(),
+            TokenType::H6 => html += format!("<h6>{}</h6>\n", tokens[i].content()).as_str(),
             TokenType::P => {
-                todo!();
-                // var aux: []u8 = "";
-                // aux = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, "<p>\n" });
+                let mut para = String::from("<p>\n");
 
-                // while (i < tokens.len and tokens[i].token_type == .P) : (i += 1) {
-                //     const p = try std.fmt.allocPrint(alloc, "{s}\n", .{tokens[i].content});
-                //     aux = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, p });
-                // }
+                while i < tokens.len() && tokens[i].ttype() == TokenType::P {
+                    para.push_str(tokens[i].content().as_str());
+                    i += 1;
+                }
+                i -= 1;
 
-                // i -= 1;
-
-                // fmt = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, "</p>\n" });
+                para.push_str("\n</p>\n");
+                html.push_str(para.as_str());
             }
             TokenType::Ol => {
-                todo!();
-                // var aux: []u8 = "";
-                // aux = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, "<ol>\n" });
+                let mut list = String::from("<ol>\n");
 
-                // while (i < tokens.len and tokens[i].token_type == .Ol) : (i += 1) {
-                //     const item = try std.fmt.allocPrint(alloc, "<li>{s}</li>\n", .{tokens[i].content});
-                //     aux = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, item });
-                // }
+                while i < tokens.len() && tokens[i].ttype() == TokenType::Ol {
+                    list.push_str(format!("<li>{}</li>\n", tokens[i].content()).as_str());
+                    i += 1;
+                }
+                i -= 1;
 
-                // i -= 1;
-
-                // fmt = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, "</ol>\n" });
+                list.push_str("</ol>\n");
+                html.push_str(list.as_str());
             }
             TokenType::Ul => {
-                todo!();
-                // var aux: []u8 = "";
-                // aux = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, "<ul>\n" });
+                let mut list = String::from("<ul>\n");
 
-                // while (i < tokens.len and tokens[i].token_type == .Ul) : (i += 1) {
-                //     const item = try std.fmt.allocPrint(alloc, "<li>{s}</li>\n", .{tokens[i].content});
-                //     aux = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, item });
-                // }
+                while i < tokens.len() && tokens[i].ttype() == TokenType::Ul {
+                    list.push_str(format!("<li>{}</li>\n", tokens[i].content()).as_str());
+                    i += 1;
+                }
+                i -= 1;
 
-                // i -= 1;
-
-                // fmt = try std.mem.concat(alloc, u8, &[2][]const u8{ aux, "</ul>\n" });
+                list.push_str("</ul>\n");
+                html.push_str(list.as_str());
             }
-            TokenType::Eof => continue,
+            TokenType::Eof => break,
             TokenType::Code => todo!(),
             TokenType::Link => todo!(),
             TokenType::Quote => todo!(),
             TokenType::Image => todo!(),
             TokenType::Illegal => todo!(),
         }
+
+        i += 1;
     }
 
     html
