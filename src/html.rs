@@ -1,6 +1,6 @@
 use crate::token::{Token, TokenType};
 
-pub fn create_html(tokens: &Vec<Token>) -> String {
+pub fn create_html(tokens: &[Token]) -> String {
     let mut html = String::new();
     let mut i = 0;
     while i < tokens.len() {

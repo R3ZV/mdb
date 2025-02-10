@@ -13,7 +13,7 @@ impl Lexer {
         let mut tokens = Vec::new();
 
         for line in self.input.lines() {
-            if line == "" {
+            if line.is_empty() {
                 continue;
             }
 
@@ -26,7 +26,7 @@ impl Lexer {
     }
 
     fn parse_header(line: String) -> Token {
-        let mut it = line.chars().into_iter();
+        let mut it = line.chars();
         let level: String = it.by_ref().take_while(|c| *c == '#').collect();
         let it = it.skip_while(|c| c.is_whitespace());
 
