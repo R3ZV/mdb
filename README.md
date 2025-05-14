@@ -50,7 +50,7 @@ Supported:
 git clone git@github.com:R3ZV/mdb.git
 cd mdb
 
-zig build
+go build .
 ```
 
 The resulting binary can be either added to the PATH or if you
